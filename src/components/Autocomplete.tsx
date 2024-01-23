@@ -7,6 +7,7 @@ const Autocomplete: React.FC = () => {
   const [countries, setCountries] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Fetch countries on mount
   useEffect(() => {
     setIsLoading(true);
     fetchCountries()
@@ -15,13 +16,14 @@ const Autocomplete: React.FC = () => {
       .finally(() => setIsLoading(false));
   }, [setIsLoading, setCountries]);
 
+  // Filter countries on query change
   const results = useMemo(() => {
     return query.length === 0
       ? []
       : countries.filter((country) =>
           country.toLowerCase().includes(query.toLowerCase()),
         );
-  }, [query, countries]);
+  }, [countries, query]);
 
   const onChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value),

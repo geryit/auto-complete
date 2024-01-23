@@ -7,6 +7,7 @@ type Props = {
 };
 
 const Result = ({ result, query }: Props) => {
+  // Example: query = "nited", parts =  ['U', 'nited', ' Kingdom']
   const parts = useMemo(
     () => result.split(new RegExp(`(${query})`, "gi")),
     [result, query],
