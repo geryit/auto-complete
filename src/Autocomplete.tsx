@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import "./Autocomplete.css";
 
 type Country = {
@@ -7,52 +7,59 @@ type Country = {
   };
 };
 
-const fetchData = async (query: string): Promise<string[]> => {
-  const countries = await fetch(
-    "https://restcountries.com/v3.1/all?fields=name",
-  )
+const fetchData = async (): Promise<string[]> =>
+  fetch("https://restcountries.com/v3.1/all?fields=name")
     .then((res) => res.json())
     .then((data) => data.map((country: Country) => country.name.common));
-  return countries.filter((country: string) =>
-    country.toLowerCase().includes(query.toLowerCase()),
-  );
-};
 
 const Autocomplete: React.FC = () => {
   const [query, setQuery] = useState("");
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [countries, setCountries] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (query.length === 0) {
-      setSuggestions([]);
-      return;
-    }
-
     setIsLoading(true);
-    fetchData(query).then((data) => {
-      setSuggestions(data);
-      setIsLoading(false);
-    });
-  }, [query]);
+    fetchData()
+      .then(setCountries)
+      .then(() => setIsLoading(false))
+      .catch(() => {
+        setCountries([]);
+        setIsLoading(false);
+      });
+  }, []);
 
-  return (
-    <div className="autocomplete">
+  const filteredCountries = useMemo(() => {
+    if (query.length === 0) return [];
+    return countries.filter((country: string) =>
+      country.toLowerCase().includes(query.toLowerCase()),
+    );
+  }, [countries, query]);
+
+  const onChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value),
+    [],
+  );
+
+  return isLoading ? (
+    <div>Loading..</div>
+  ) : (
+    <div className="auto-complete">
       <input
         type="text"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        className="autocomplete-input"
+        onChange={onChange}
+        className="auto-complete-input"
         placeholder="Search a country..."
       />
-      {isLoading && <div>Loading...</div>}
-      <ul className="autocomplete-list">
-        {suggestions.map((suggestion, index) => (
-          <li key={index} className="autocomplete-item">
-            {suggestion}
-          </li>
-        ))}
-      </ul>
+      {filteredCountries.length > 0 && (
+        <ul className="auto-complete-results">
+          {filteredCountries.map((country) => (
+            <li key={country} className="auto-complete-result">
+              {country}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
