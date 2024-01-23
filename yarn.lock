@@ -2027,11 +2027,6 @@
   dependencies:
     undici-types "~5.26.4"
 
-"@types/node@^16.18.74":
-  version "16.18.74"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.18.74.tgz#af518a0abafe8ab453f04c12ee62cfad75a8ca8d"
-  integrity sha512-eEn8RkzZFcT0gb8qyi0CcfSOQnLE+NbGLIIaxGGmjn/N35v/C3M8ohxcpSlNlCv+H8vPpMGmrGDdCkzr8xu2tQ==
-
 "@types/parse-json@^4.0.0":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.2.tgz#5950e50960793055845e956c427fc2b0d70c5239"
