@@ -1,6 +1,5 @@
-import React from 'react';
-import Autocomplete from './Autocomplete';
-import './App.css';
+import React from "react";
+import Autocomplete from "./Autocomplete";
 
 const App: React.FC = () => {
   return <Autocomplete />;
