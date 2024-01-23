@@ -1,10 +1,61 @@
 body {
   margin: 1rem;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
 }
 
-*, ::after, ::before {
+*,
+::after,
+::before {
   box-sizing: border-box;
+}
+
+input {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  font-size: 1rem;
+}
+
+.auto-complete {
+  position: relative;
+  width: 16rem;
+}
+
+.auto-complete-input {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #ddd;
+}
+
+.auto-complete-results {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  width: 100%;
+  border: 1px solid #ddd;
+  z-index: 10;
+  background: #eee;
+}
+
+.auto-complete-result {
+  border-bottom: 1px solid #ddd;
+}
+
+.auto-complete-link {
+  color: #000;
+  padding: 1rem;
+  display: block;
+  text-decoration: none;
+}
+
+.auto-complete-link:hover {
+  background-color: #ddd;
+}
+
+.auto-complete-no-results {
+  padding: 1rem;
+  text-align: center;
 }

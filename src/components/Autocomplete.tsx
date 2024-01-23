@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo, memo } from "react";
-import "./Autocomplete.css";
 import Result from "./Result";
-import { fetchCountries } from "./fetchCountries";
+import { fetchCountries } from "../utils/fetchCountries";
 
 const Autocomplete: React.FC = () => {
   const [query, setQuery] = useState("");
@@ -42,12 +41,14 @@ const Autocomplete: React.FC = () => {
       />
       {!!query &&
         (!results.length ? (
-          <div>No results found</div>
+          <div className="auto-complete-no-results">No results found</div>
         ) : (
           <ul className="auto-complete-results">
             {results.map((result) => (
               <li key={result} className="auto-complete-result">
-                <Result result={result} query={query} />
+                <a className="auto-complete-link" href="#">
+                  <Result result={result} query={query} />
+                </a>
               </li>
             ))}
           </ul>
