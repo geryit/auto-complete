@@ -49,15 +49,18 @@ const Autocomplete: React.FC = () => {
         className="auto-complete-input"
         placeholder="Search a country..."
       />
-      {filteredCountries.length > 0 && (
-        <ul className="auto-complete-results">
-          {filteredCountries.map((country) => (
-            <li key={country} className="auto-complete-result">
-              {country}
-            </li>
-          ))}
-        </ul>
-      )}
+      {!!query &&
+        (!filteredCountries.length ? (
+          <div>No results found</div>
+        ) : (
+          <ul className="auto-complete-results">
+            {filteredCountries.map((country) => (
+              <li key={country} className="auto-complete-result">
+                {country}
+              </li>
+            ))}
+          </ul>
+        ))}
     </div>
   );
 };
