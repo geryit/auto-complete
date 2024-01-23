@@ -6,6 +6,7 @@ const Autocomplete: React.FC = () => {
   const [query, setQuery] = useState("");
   const [countries, setCountries] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isResultsVisible, setIsResultsVisible] = useState(false);
 
   // Fetch countries on mount
   useEffect(() => {
@@ -26,9 +27,20 @@ const Autocomplete: React.FC = () => {
   }, [countries, query]);
 
   const onChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value),
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setQuery(e.target.value);
+      setIsResultsVisible(true);
+    },
     [setQuery],
   );
+
+  const onFocus = useCallback(() => {
+    setIsResultsVisible(true);
+  }, []);
+
+  const onBlur = useCallback(() => {
+    setIsResultsVisible(false);
+  }, []);
 
   return isLoading ? (
     <div>Loading..</div>
@@ -40,8 +52,11 @@ const Autocomplete: React.FC = () => {
         onChange={onChange}
         className="auto-complete-input"
         placeholder="Search a country..."
+        onFocus={onFocus}
+        onBlur={onBlur}
       />
       {!!query &&
+        isResultsVisible &&
         (!results.length ? (
           <div className="auto-complete-no-results">No results found</div>
         ) : (
