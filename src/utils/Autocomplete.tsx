@@ -1,16 +1,7 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useCallback, useMemo, memo } from "react";
 import "./Autocomplete.css";
-
-type Country = {
-  name: {
-    common: string;
-  };
-};
-
-const fetchData = async (): Promise<string[]> =>
-  fetch("https://restcountries.com/v3.1/all?fields=name")
-    .then((res) => res.json())
-    .then((data) => data.map((country: Country) => country.name.common));
+import Result from "./Result";
+import { fetchCountries } from "./fetchCountries";
 
 const Autocomplete: React.FC = () => {
   const [query, setQuery] = useState("");
@@ -19,23 +10,23 @@ const Autocomplete: React.FC = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetchData()
+    fetchCountries()
       .then(setCountries)
       .catch(console.error)
       .finally(() => setIsLoading(false));
-  }, []);
+  }, [setIsLoading, setCountries]);
 
-  const filteredCountries = useMemo(() => {
+  const results = useMemo(() => {
     return query.length === 0
       ? []
       : countries.filter((country) =>
           country.toLowerCase().includes(query.toLowerCase()),
         );
-  }, [countries, query]);
+  }, [query, countries]);
 
   const onChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value),
-    [],
+    [setQuery],
   );
 
   return isLoading ? (
@@ -50,13 +41,13 @@ const Autocomplete: React.FC = () => {
         placeholder="Search a country..."
       />
       {!!query &&
-        (!filteredCountries.length ? (
+        (!results.length ? (
           <div>No results found</div>
         ) : (
           <ul className="auto-complete-results">
-            {filteredCountries.map((country) => (
-              <li key={country} className="auto-complete-result">
-                {country}
+            {results.map((result) => (
+              <li key={result} className="auto-complete-result">
+                <Result result={result} query={query} />
               </li>
             ))}
           </ul>
@@ -65,4 +56,4 @@ const Autocomplete: React.FC = () => {
   );
 };
 
-export default Autocomplete;
+export default memo(Autocomplete);
