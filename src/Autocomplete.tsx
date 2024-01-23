@@ -21,18 +21,16 @@ const Autocomplete: React.FC = () => {
     setIsLoading(true);
     fetchData()
       .then(setCountries)
-      .then(() => setIsLoading(false))
-      .catch(() => {
-        setCountries([]);
-        setIsLoading(false);
-      });
+      .catch(console.error)
+      .finally(() => setIsLoading(false));
   }, []);
 
   const filteredCountries = useMemo(() => {
-    if (query.length === 0) return [];
-    return countries.filter((country: string) =>
-      country.toLowerCase().includes(query.toLowerCase()),
-    );
+    return query.length === 0
+      ? []
+      : countries.filter((country) =>
+          country.toLowerCase().includes(query.toLowerCase()),
+        );
   }, [countries, query]);
 
   const onChange = useCallback(
